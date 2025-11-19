@@ -26,4 +26,13 @@ export type PluData = {
   target: string;
 };
 
+export type ProgramData = {
+  kode_program: string;
+  nama_program: string;
+  items: {
+    plu: string;
+    descp: string;
+  }[];
+};
+
 export type WeekType = "now" | "before" | "next";
