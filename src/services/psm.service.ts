@@ -1,26 +1,44 @@
 import { parsePeriodeData } from "../helpers/mapper";
 import { getPeriod } from "../helpers/time";
 import { isValidStoreCode } from "../helpers/validator";
+import { dummyRaw } from "../sample/dummy";
 import type { ApiResponse, ProgramData, WeekType } from "../types";
 
-const getProgramData = async (kv: KVNamespace, kode_toko: string, week_type: WeekType): Promise<ApiResponse> => {
+async function getProgramData(
+  kv: KVNamespace,
+  kode_toko: string,
+  week_type: WeekType,
+  dev: boolean = false
+): Promise<ApiResponse> {
   if (!isValidStoreCode(kode_toko)) return { success: false, code: 400, message: "invalid kd_toko format" };
 
   const kode_periode = getPeriod(week_type);
   let listProgramData: ProgramData[] | null = await kv.get(kode_periode, "json");
-  if (listProgramData) return { success: true, code: 200, data: listProgramData };
+  if (listProgramData) {
+    console.log("pake dari kv");
+    return { success: true, code: 200, data: listProgramData };
+  }
 
-  listProgramData = await fetchProgramData(kode_toko, week_type, kode_periode);
-  if (!listProgramData.length) return { success: false, code: 404, message: "no data provided from the server" };
+  let fetchedData: string[];
+  if (dev) {
+    console.log("pake dummyRaw");
+    fetchedData = dummyRaw;
+  } else {
+    fetchedData = await fetchProgramData(kode_toko, week_type, kode_periode);
+  }
 
+  if (!fetchedData.length) return { success: false, code: 404, message: "no data provided from the server" };
+
+  listProgramData = parsePeriodeData(fetchedData);
   await kv.put(kode_periode, JSON.stringify(listProgramData));
   console.log(JSON.stringify(listProgramData, null, 2));
 
   return { success: true, code: 200, data: listProgramData };
-};
+}
 
-export const fetchProgramData = async (kode_toko: string, week_type: WeekType, kode_periode: string) => {
+export async function fetchProgramData(kode_toko: string, week_type: WeekType, kode_periode: string) {
   const result: string[] = [];
+
   for (let i = 1; i <= 10; i++) {
     const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/${week_type}/${kode_periode}${i
       .toString()
@@ -35,7 +53,7 @@ export const fetchProgramData = async (kode_toko: string, week_type: WeekType, k
     }
   }
 
-  return parsePeriodeData(result);
-};
+  return result;
+}
 
 export default { getProgramData };

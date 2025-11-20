@@ -1,7 +1,13 @@
+import { getPeriod } from "../helpers/time";
+import type { WeekType } from "../types";
 import { fetchProgramData } from "./psm.service";
 
 (async () => {
-  const result = await fetchProgramData("J007", "now");
+  const kode_toko = "J007";
+  const week_type: WeekType = "now";
+  const kode_periode = getPeriod(week_type);
+
+  const result = await fetchProgramData(kode_toko, week_type, kode_periode);
 
   console.log(result);
 })();

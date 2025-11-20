@@ -1,9 +1,9 @@
 import psmHandler from "../handlers/psm.handler";
 import { factory } from "./factory";
 
-export const testRoute = factory.createApp().get("/", async (c) => {
-  await c.env.DB.exec("CREATE TABLE test (id INT PRIMARY KEY, name TEXT DEFAULT NULL);");
-  return c.text("OK");
-});
+export const psm = factory.createApp().get("/:kode_toko", ...psmHandler.getPeriode);
 
-export const psm = factory.createApp().get("/:kode_toko", ...psmHandler.getPeriodeNow);
+export const env = factory.createApp().get("/", async (c) => {
+  const { DEV } = c.env;
+  return c.text(DEV);
+});
