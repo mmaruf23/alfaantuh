@@ -13,9 +13,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
-      - run: npm i -g wrangler
+      - run: npm install
+
+      - run: npm install -g wrangler
 
       - run: wrangler deploy
         env:
