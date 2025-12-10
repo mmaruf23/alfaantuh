@@ -41,7 +41,7 @@ async function getProgramData(kv: KVNamespace, week_type: WeekType): Promise<Api
 export async function fetchProgramData(week_type: WeekType, kode_periode: string) {
   const result: string[] = [];
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 20; i++) {
     const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/${week_type}/${kode_periode}${i
       .toString()
       .padStart(3, "0")}_J001.csv`;
