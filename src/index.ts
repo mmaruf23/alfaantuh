@@ -17,7 +17,7 @@ app.get("/", (c) => {
 
 app.get("/env", (c) => {
   return c.json({
-    env: env
+    env: c.env
   });
 });
 
