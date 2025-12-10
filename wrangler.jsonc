@@ -3,14 +3,6 @@
   "name": "psm",
   "main": "src/index.ts",
   "compatibility_date": "2025-10-11",
-  // "d1_databases": [
-  //   {
-  //     "binding": "DB",
-  //     "database_name": "alfaantuh",
-  //     "database_id": "bce1b25c-814f-4ebd-a9e4-096dbeb33555",
-  //     "migrations_dir": "drizzle"
-  //   }
-  // ],
   "kv_namespaces": [
     {
       "binding": "PSM",
