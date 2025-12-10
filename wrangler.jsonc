@@ -23,14 +23,14 @@
       "persist": true,
       "head_sampling_rate": 1
     }
-  }
+  },
 
   // "compatibility_flags": [
   //   "nodejs_compat"
   // ],
-  // "vars": {
-  //   "MY_VAR": "my-variable"
-  // },
+  "vars": {
+    "ORIGIN": "https://psm-online.pages.dev"
+  }
   // "kv_namespaces": [
   //   {
   //     "binding": "MY_KV_NAMESPACE",
