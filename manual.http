@@ -1,5 +1,5 @@
-# @baseUrl = http://localhost:8787
-@baseUrl = https://alfaantuh.maruuf82.workers.dev
+@baseUrl = http://localhost:8787
+# @baseUrl = https://alfaantuh.maruuf82.workers.dev
 
 
 ### GET ENV
@@ -10,3 +10,9 @@ GET {{baseUrl}}/psm?periode=now
 
 ### GET ARCHIEVE PSM
 GET {{baseUrl}}/psm/J599/25114002?periode=now
+
+### GET STORE INFO
+GET {{baseUrl}}/info/J007/25124001
+
+### DELERE STORE INFO
+DELETE  {{baseUrl}}/info/J007

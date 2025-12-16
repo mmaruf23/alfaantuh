@@ -4,11 +4,11 @@ import { parsePeriodeData, parseCSVtoObject, parseArchiveData } from "../helpers
 import { getPeriod } from "../helpers/time";
 import { isValidProgramCode, isValidStoreCode } from "../helpers/validator";
 import { dummyAcv, dummyRaw } from "../sample/dummy";
-import type { ApiResponse, RawArchiveData, ProgramData, WeekType, ArchiveData } from "../types";
+import type { ApiResponse, WeekType } from "../types";
 
-async function getProgramData(kv: KVNamespace, week_type: WeekType): Promise<ApiResponse> {
+async function getProgramData(psm: KVNamespace, week_type: WeekType): Promise<ApiResponse> {
   const kode_periode = getPeriod(week_type);
-  let listProgramDataResponse: ApiResponse | null = await kv.get(kode_periode, "json");
+  let listProgramDataResponse: ApiResponse | null = await psm.get(kode_periode, "json");
   if (listProgramDataResponse) {
     console.log("pake dari kv");
     return listProgramDataResponse;
@@ -24,14 +24,14 @@ async function getProgramData(kv: KVNamespace, week_type: WeekType): Promise<Api
 
   if (!fetchedData.length) {
     const noDataResponse: ApiResponse = { success: false, code: 404, message: "no data provided from the server" };
-    await kv.put(kode_periode, JSON.stringify(noDataResponse), {
+    await psm.put(kode_periode, JSON.stringify(noDataResponse), {
       expirationTtl: 43200,
     });
     return noDataResponse;
   }
 
   listProgramDataResponse = parsePeriodeData(fetchedData);
-  await kv.put(kode_periode, JSON.stringify(listProgramDataResponse), {
+  await psm.put(kode_periode, JSON.stringify(listProgramDataResponse), {
     expirationTtl: 2592000,
   });
 
@@ -41,12 +41,15 @@ async function getProgramData(kv: KVNamespace, week_type: WeekType): Promise<Api
 export async function fetchProgramData(week_type: WeekType, kode_periode: string) {
   const result: string[] = [];
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+
   for (let i = 1; i <= 20; i++) {
     const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/${week_type}/${kode_periode}${i
       .toString()
       .padStart(3, "0")}_J001.csv`;
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, { signal: controller.signal });
 
       if (res.status === 200) {
         result.push(await res.text());
@@ -55,10 +58,15 @@ export async function fetchProgramData(week_type: WeekType, kode_periode: string
         res.body?.cancel();
       }
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        return [];
+      }
+
       continue;
     }
   }
 
+  clearTimeout(timeout);
   return result;
 }
 
@@ -71,7 +79,7 @@ async function getPSMData(kode_toko: string, kode_program: string, week_type: We
   let response: string;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 3000);
+  const timeout = setTimeout(() => controller.abort(), 5000);
 
   try {
     const res = dev_mode ? new Response(dummyAcv, { status: 200 }) : await fetch(url, { signal: controller.signal });

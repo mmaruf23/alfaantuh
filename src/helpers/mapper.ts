@@ -1,4 +1,4 @@
-import type { RawArchiveData, PluData, ProgramData, ArchiveData, ApiResponse } from "../types";
+import type { RawArchiveData, PluData, ProgramData, ArchiveData, ApiResponse, StoreInfo } from "../types";
 
 export const parseCSVtoObject = (rawData: string) => {
   const rowData = rawData.trim().replace(" ", "_").replace(/["\r]/g, "").split("\n");
@@ -55,4 +55,8 @@ export const parseArchiveData = (s: string): ArchiveData => {
   });
 
   return { kd_cabang, kd_store, asq, target_min, status, cashier } as ArchiveData;
+};
+
+export const parsePluDataToStoreInfo = (data: PluData): StoreInfo => {
+  return { cabang: data.cabang, kd_store: data.kd_store, nama_store: data.nama_store };
 };
