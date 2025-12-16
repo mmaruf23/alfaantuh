@@ -1,4 +1,5 @@
 import type { WeekType } from "../types";
+import { getPeriod } from "./time";
 
 export const isValidStoreCode = (s: string): boolean => {
   const codeRegex = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{4}$/;
@@ -28,5 +29,10 @@ export const isValidProgramCode = (s: string): boolean => {
 
 export const parseWeekType = (s: string | undefined): WeekType => {
   if (s === "before" || s === "next") return s;
+  return "now";
+};
+
+export const programCodeToPeriode = (s: string) => {
+  if (s.includes(getPeriod("before"))) return "before";
   return "now";
 };

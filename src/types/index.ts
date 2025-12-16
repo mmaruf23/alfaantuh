@@ -76,4 +76,6 @@ export type ArchiveData = {
   }[];
 };
 
+export type StoreInfo = Pick<PluData, "cabang" | "kd_store" | "nama_store">;
+
 export type WeekType = "now" | "before" | "next";
