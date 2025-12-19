@@ -1,6 +1,6 @@
 import type { ContentfulStatusCode } from "hono/utils/http-status";
 import { dev_mode } from "@/app/factory";
-import { parsePeriodeData, parseCSVtoObject, parseArchiveData } from "@/helpers/mapper";
+import { parsePeriodeData, parseCSVtoObject, parseArchiveData, parseTargetData } from "@/helpers/mapper";
 import { getPeriod } from "@/helpers/time";
 import { isValidProgramCode, isValidStoreCode } from "@/helpers/validator";
 import { dummyAcv, dummyRaw } from "@/sample/dummy";
@@ -108,4 +108,39 @@ async function getPSMData(kode_toko: string, kode_program: string, week_type: We
   return { success: true, code: 200, data: result };
 }
 
-export default { getProgramData, getPSMData };
+export async function getTargetData(kode_toko: string, kode_program: string): Promise<ApiResponse> {
+  if (!isValidStoreCode(kode_toko)) return { success: false, code: 400, message: "invalid kd_toko format" };
+  if (!isValidProgramCode(kode_program)) return { success: false, code: 400, message: "invalid kode_program format" };
+
+  const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/next/${kode_program}_${kode_toko.toUpperCase()}.csv`;
+
+  let response: string;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+
+  try {
+    const res = dev_mode ? new Response(dummyRaw[0], { status: 200 }) : await fetch(url, { signal: controller.signal });
+
+    clearTimeout(timeout);
+
+    if (res.status !== 200)
+      return { success: false, code: res.status as ContentfulStatusCode, message: "data not available" };
+
+    response = await res.text();
+  } catch (error) {
+    clearTimeout(timeout);
+    if (error instanceof DOMException && error.name === "AbortError") {
+      return { success: false, code: 408, message: "request timeout" };
+    }
+
+    console.error(error);
+    return { success: false, code: 500, message: "error getting target data" };
+  }
+
+  const result = parseTargetData(response);
+
+  return { success: true, code: 200, data: result };
+}
+
+export default { getProgramData, getPSMData, getTargetData };
