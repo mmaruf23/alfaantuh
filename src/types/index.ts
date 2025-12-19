@@ -35,6 +35,8 @@ export type ProgramData = {
   }[];
 };
 
+export type TargetData = ProgramData & Pick<PluData, "personel" | "target">;
+
 export type RawArchiveData = {
   kd_cabang: string;
   nik: string;

@@ -18,4 +18,12 @@ const getArchive = factory.createHandlers(async (c) => {
   return c.json(result, result.code);
 });
 
-export default { getPeriode, getArchive };
+const getTargetData = factory.createHandlers(async (c) => {
+  const kode_toko = c.req.param("kode_toko")!;
+  const kode_program = c.req.param("kode_program")!;
+  const result = await psmService.getTargetData(kode_toko, kode_program);
+
+  return c.json(result, result.code);
+});
+
+export default { getPeriode, getArchive, getTargetData };
