@@ -1,5 +1,5 @@
-import type { WeekType } from "../types";
-import { getPeriod } from "./time";
+import type { WeekType } from "@/types";
+import { getPeriod } from "@/helpers/time";
 
 export const isValidStoreCode = (s: string): boolean => {
   const codeRegex = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{4}$/;

@@ -1,5 +1,5 @@
-import { factory } from "../app/factory";
-import storeService from "../services/store.service";
+import { factory } from "@/app/factory";
+import storeService from "@/services/store.service";
 
 const getStoreInfo = factory.createHandlers(async (c) => {
   const kode_toko = c.req.param("kode_toko")!;

@@ -1,6 +1,6 @@
-import { getPeriod } from "../helpers/time";
-import type { WeekType } from "../types";
-import { fetchProgramData } from "./psm.service";
+import { getPeriod } from "@/helpers/time";
+import type { WeekType } from "@/types";
+import { fetchProgramData } from "@/services/psm.service";
 
 (async () => {
   const kode_toko = "J007";

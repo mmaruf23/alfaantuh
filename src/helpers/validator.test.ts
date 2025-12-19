@@ -1,4 +1,4 @@
-import { isValidProgramCode, isValidStoreCode } from "./validator";
+import { isValidProgramCode, isValidStoreCode } from "@/helpers/validator";
 
 const result = isValidStoreCode("JB57");
 console.assert(result, "ERROR FORMAT SALAH");

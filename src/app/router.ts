@@ -1,6 +1,6 @@
-import psmHandler from "../handlers/psm.handler";
-import storeHandler from "../handlers/store.handler";
-import { factory } from "./factory";
+import psmHandler from "@/handlers/psm.handler";
+import storeHandler from "@/handlers/store.handler";
+import { factory } from "@/app/factory";
 
 export const psm = factory
   .createApp()

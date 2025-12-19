@@ -1,10 +1,10 @@
 import type { ContentfulStatusCode } from "hono/utils/http-status";
-import { dev_mode } from "../app/factory";
-import { parsePeriodeData, parseCSVtoObject, parseArchiveData } from "../helpers/mapper";
-import { getPeriod } from "../helpers/time";
-import { isValidProgramCode, isValidStoreCode } from "../helpers/validator";
-import { dummyAcv, dummyRaw } from "../sample/dummy";
-import type { ApiResponse, WeekType } from "../types";
+import { dev_mode } from "@/app/factory";
+import { parsePeriodeData, parseCSVtoObject, parseArchiveData } from "@/helpers/mapper";
+import { getPeriod } from "@/helpers/time";
+import { isValidProgramCode, isValidStoreCode } from "@/helpers/validator";
+import { dummyAcv, dummyRaw } from "@/sample/dummy";
+import type { ApiResponse, WeekType } from "@/types";
 
 async function getProgramData(psm: KVNamespace, week_type: WeekType): Promise<ApiResponse> {
   const kode_periode = getPeriod(week_type);

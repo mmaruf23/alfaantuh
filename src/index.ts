@@ -1,8 +1,8 @@
 import { cors } from "hono/cors";
-import { app } from "./app/factory";
-import { psm, store } from "./app/router";
+import { app } from "@/app/factory";
+import { psm, store } from "@/app/router";
 import { env } from "cloudflare:workers";
-import type { ApiResponse } from "./types";
+import type { ApiResponse } from "@/types";
 
 app.use("/psm/*", cors({ origin: [env.ORIGIN], allowMethods: ["GET"] }));
 app.use("/info/*", cors({ origin: [env.ORIGIN], allowMethods: ["GET"] }));

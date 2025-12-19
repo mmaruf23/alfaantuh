@@ -1,9 +1,8 @@
-import { dev_mode } from "../app/factory";
-import { parseCSVtoObject, parsePluDataToStoreInfo } from "../helpers/mapper";
-import { getPeriod } from "../helpers/time";
-import { isValidProgramCode, isValidStoreCode, programCodeToPeriode } from "../helpers/validator";
-import { dummyAcv, dummyRaw } from "../sample/dummy";
-import type { ApiResponse, PluData, StoreInfo } from "../types";
+import { dev_mode } from "@/app/factory";
+import { parseCSVtoObject, parsePluDataToStoreInfo } from "@/helpers/mapper";
+import { isValidProgramCode, isValidStoreCode, programCodeToPeriode } from "@/helpers/validator";
+import { dummyRaw } from "@/sample/dummy";
+import type { ApiResponse, PluData, StoreInfo } from "@/types";
 
 async function getStoreInfo(kode_toko: string, kode_program: string, store: KVNamespace): Promise<ApiResponse> {
   if (!isValidStoreCode(kode_toko)) {

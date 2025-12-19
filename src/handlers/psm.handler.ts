@@ -1,6 +1,6 @@
-import { factory } from "../app/factory";
-import { parseWeekType } from "../helpers/validator";
-import psmService from "../services/psm.service";
+import { factory } from "@/app/factory";
+import { parseWeekType } from "@/helpers/validator";
+import psmService from "@/services/psm.service";
 
 const getPeriode = factory.createHandlers(async (c) => {
   const week_type = parseWeekType(c.req.query("periode"));

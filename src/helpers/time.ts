@@ -1,4 +1,4 @@
-import type { WeekType } from "../types";
+import type { WeekType } from "@/types";
 
 export const getPeriod = (weekType: WeekType = "now"): string => {
   const now = new Date();

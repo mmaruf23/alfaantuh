@@ -1,4 +1,4 @@
-import type { RawArchiveData, PluData, ProgramData, ArchiveData, ApiResponse, StoreInfo } from "../types";
+import type { RawArchiveData, PluData, ProgramData, ArchiveData, ApiResponse, StoreInfo } from "@/types";
 
 export const parseCSVtoObject = (rawData: string) => {
   const rowData = rawData.trim().replace(" ", "_").replace(/["\r]/g, "").split("\n");
