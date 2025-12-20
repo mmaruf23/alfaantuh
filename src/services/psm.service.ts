@@ -45,6 +45,7 @@ export async function fetchProgramData(week_type: WeekType, kode_periode: string
   const timeout = setTimeout(() => controller.abort(), 50000);
 
   for (let i = 1; i <= 20; i++) {
+    if (result.length >= 10) break;
     const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/${week_type}/${kode_periode}${i
       .toString()
       .padStart(3, "0")}_J001.csv`;
