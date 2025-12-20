@@ -42,12 +42,13 @@ export async function fetchProgramData(week_type: WeekType, kode_periode: string
   const result: string[] = [];
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 10000);
+  const timeout = setTimeout(() => controller.abort(), 50000);
 
   for (let i = 1; i <= 20; i++) {
     const url = `https://intranet.sat.co.id/pdmstore/public/file/plu/${week_type}/${kode_periode}${i
       .toString()
       .padStart(3, "0")}_J001.csv`;
+    console.log("fetch url : ", url);
     try {
       const res = await fetch(url, { signal: controller.signal });
 
@@ -59,6 +60,7 @@ export async function fetchProgramData(week_type: WeekType, kode_periode: string
       }
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") {
+        console.log("time out while getting program data");
         return [];
       }
 
@@ -79,7 +81,7 @@ async function getPSMData(kode_toko: string, kode_program: string, week_type: We
   let response: string;
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5000);
+  const timeout = setTimeout(() => controller.abort(), 10000);
 
   try {
     const res = dev_mode ? new Response(dummyAcv, { status: 200 }) : await fetch(url, { signal: controller.signal });
